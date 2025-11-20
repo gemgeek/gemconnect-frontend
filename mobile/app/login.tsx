@@ -56,11 +56,6 @@ export default function LoginScreen() {
       return;
     }
 
-    // NOTE: Your backend logic uses 'username' for login, 
-    // but your design uses 'email'. 
-    // If your Django setup allows email login, send email.
-    // If it requires username, we might need to adjust.
-    // Let's try sending email as the username first (common Django setup).
     
     loginUser({
       variables: {
