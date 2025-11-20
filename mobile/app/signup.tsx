@@ -14,14 +14,16 @@ import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome } from '@expo/vector-icons'; 
 
-export default function LoginScreen() {
+export default function SignupScreen() {
   const router = useRouter();
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    console.log("Login with:", email, password);
-    // We will connect this to GraphQL later!
+  const handleRegister = () => {
+    console.log("Register with:", firstName, lastName, email);
+    // Connect to GraphQL later
   };
 
   return (
@@ -31,7 +33,6 @@ export default function LoginScreen() {
     >
       <ScrollView contentContainerStyle={styles.scrollContent}>
         
-        {/* LOGO */}
         <View style={styles.logoContainer}>
           <Image 
             source={require('../assets/images/logo.png')} 
@@ -40,10 +41,30 @@ export default function LoginScreen() {
           />
         </View>
 
-        {/* HEADER */}
-        <Text style={styles.header}>Log In</Text>
+        <Text style={styles.header}>Sign Up</Text>
 
-        {/* INPUTS */}
+        {/* SPLIT ROW FOR NAMES */}
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Full name</Text> 
+          <View style={styles.row}>
+            <TextInput
+              style={[styles.input, styles.halfInput]}
+              placeholder="First Name"
+              placeholderTextColor="#999"
+              value={firstName}
+              onChangeText={setFirstName}
+            />
+            <View style={{ width: 10 }} /> 
+            <TextInput
+              style={[styles.input, styles.halfInput]}
+              placeholder="Last Name"
+              placeholderTextColor="#999"
+              value={lastName}
+              onChangeText={setLastName}
+            />
+          </View>
+        </View>
+
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Email</Text>
           <TextInput
@@ -69,39 +90,34 @@ export default function LoginScreen() {
           />
         </View>
 
-        {/* SIGN UP LINK */}
         <View style={styles.linkContainer}>
-          <Text style={styles.linkText}>Don't have an account? </Text>
-          <TouchableOpacity onPress={() => router.push('/signup')}>
-            <Text style={styles.linkHighlight}>Sign up</Text>
+          <Text style={styles.linkText}>Already have an account? </Text>
+          <TouchableOpacity onPress={() => router.push('/login')}>
+            <Text style={styles.linkHighlight}>Login</Text>
           </TouchableOpacity>
         </View>
 
-        {/* BUTTON */}
-        <TouchableOpacity onPress={handleLogin} style={styles.buttonWrapper}>
+        <TouchableOpacity onPress={handleRegister} style={styles.buttonWrapper}>
           <LinearGradient
             colors={['#FF007F', '#8B008B']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.button}
           >
-            <Text style={styles.buttonText}>Sign in</Text>
+            <Text style={styles.buttonText}>Register</Text>
           </LinearGradient>
         </TouchableOpacity>
 
-        {/* OR DIVIDER */}
         <View style={styles.dividerContainer}>
           <View style={styles.line} />
           <Text style={styles.orText}>OR</Text>
           <View style={styles.line} />
         </View>
 
-        {/* SOCIAL ICONS */}
         <View style={styles.socialContainer}>
           <TouchableOpacity style={styles.socialButton}>
             <FontAwesome name="facebook" size={30} color="#1877F2" />
           </TouchableOpacity>
-          
           <TouchableOpacity style={styles.socialButton}>
             <Image 
               source={{ uri: 'https://cdn-icons-png.flaticon.com/512/300/300221.png' }} 
@@ -118,14 +134,12 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#FFF' },
   scrollContent: { flexGrow: 1, padding: 24, justifyContent: 'center' },
-  
   logoContainer: { alignItems: 'center', marginBottom: 20 },
-  logo: { width: 60, height: 60 }, 
-  
+  logo: { width: 60, height: 60 },
   header: { fontSize: 28, fontWeight: 'bold', marginBottom: 30, color: '#000' },
-  
   inputGroup: { marginBottom: 20 },
   label: { fontSize: 16, marginBottom: 8, color: '#333' },
+  row: { flexDirection: 'row' },
   input: {
     borderWidth: 1,
     borderColor: '#DDD',
@@ -134,11 +148,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: '#FFF',
   },
-  
+  halfInput: { flex: 1 }, // Takes up half the space
   linkContainer: { flexDirection: 'row', justifyContent: 'center', marginBottom: 30 },
   linkText: { color: '#888' },
   linkHighlight: { color: '#FF007F', fontWeight: 'bold' },
-  
   buttonWrapper: {
     height: 55,
     marginBottom: 30,
@@ -150,11 +163,9 @@ const styles = StyleSheet.create({
   },
   button: { flex: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 28 },
   buttonText: { color: '#FFF', fontSize: 18, fontWeight: 'bold' },
-  
   dividerContainer: { flexDirection: 'row', alignItems: 'center', marginBottom: 20 },
   line: { flex: 1, height: 1, backgroundColor: '#DDD' },
   orText: { marginHorizontal: 10, color: '#888', fontWeight: '500' },
-  
   socialContainer: { flexDirection: 'row', justifyContent: 'center', gap: 20 },
   socialButton: { padding: 10 },
 });
