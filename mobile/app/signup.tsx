@@ -8,11 +8,15 @@ import {
   Image, 
   KeyboardAvoidingView, 
   Platform, 
-  ScrollView 
+  ScrollView,
+  Alert, 
+  ActivityIndicator 
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome } from '@expo/vector-icons'; 
+import { useMutation } from '@apollo/client/react';
+import { REGISTER_USER } from '../src/graphql/mutations';
 
 export default function SignupScreen() {
   const router = useRouter();
@@ -21,9 +25,35 @@ export default function SignupScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const [registerUser, { loading }] = useMutation(REGISTER_USER, {
+    onCompleted: (data: any) => {
+      // Success!
+      Alert.alert("Success", "Account created successfully!");
+      console.log("User created:", data);
+      router.push('/login'); 
+    },
+    onError: (error: any) => {
+      // Failed!
+      Alert.alert("Registration Failed", error.message);
+      console.error("GraphQL Error:", error);
+    }
+  });
+
   const handleRegister = () => {
-    console.log("Register with:", firstName, lastName, email);
-    // Connect to GraphQL later
+    if (!firstName || !lastName || !email || !password) {
+      Alert.alert("Error", "Please fill in all fields");
+      return;
+    }
+
+    const generatedUsername = `${firstName}${lastName}`.trim();
+
+    registerUser({
+      variables: {
+        username: generatedUsername,
+        email: email,
+        password: password
+      }
+    });
   };
 
   return (
@@ -43,9 +73,8 @@ export default function SignupScreen() {
 
         <Text style={styles.header}>Sign Up</Text>
 
-        {/* SPLIT ROW FOR NAMES */}
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Full name</Text> 
+          <Text style={styles.label}>Username</Text> 
           <View style={styles.row}>
             <TextInput
               style={[styles.input, styles.halfInput]}
@@ -97,14 +126,22 @@ export default function SignupScreen() {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity onPress={handleRegister} style={styles.buttonWrapper}>
+        <TouchableOpacity 
+          onPress={handleRegister} 
+          style={styles.buttonWrapper}
+          disabled={loading}
+        >
           <LinearGradient
             colors={['#FF007F', '#8B008B']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.button}
           >
-            <Text style={styles.buttonText}>Register</Text>
+            {loading ? (
+              <ActivityIndicator color="#FFF" />
+            ) : (
+              <Text style={styles.buttonText}>Register</Text>
+            )}
           </LinearGradient>
         </TouchableOpacity>
 
@@ -148,7 +185,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: '#FFF',
   },
-  halfInput: { flex: 1 }, // Takes up half the space
+  halfInput: { flex: 1 }, 
   linkContainer: { flexDirection: 'row', justifyContent: 'center', marginBottom: 30 },
   linkText: { color: '#888' },
   linkHighlight: { color: '#FF007F', fontWeight: 'bold' },
