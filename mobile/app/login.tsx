@@ -40,7 +40,7 @@ export default function LoginScreen() {
         await AsyncStorage.setItem('username', email); 
 
         Alert.alert("Success", "Login Successful!");
-        // router.replace('/(tabs)/feed'); 
+        router.replace('/(tabs)'); 
       } catch (e) {
         console.error("Saving error", e);
       }

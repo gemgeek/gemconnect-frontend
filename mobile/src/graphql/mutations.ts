@@ -22,3 +22,46 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+
+export const CREATE_POST = gql`
+  mutation CreatePost($content: String!, $imageData: String) {
+    createPost(content: $content, imageData: $imageData) {
+      post {
+        id
+        content
+        image
+        author {
+          username
+        }
+      }
+    }
+  }
+`;
+
+export const LIKE_POST = gql`
+  mutation LikePost($postId: ID!) {
+    likePost(postId: $postId) {
+      post {
+        id
+        likes {
+          id
+        }
+      }
+    }
+  }
+`;
+
+export const CREATE_COMMENT = gql`
+  mutation CreateComment($postId: ID!, $text: String!) {
+    createComment(postId: $postId, text: $text) {
+      comment {
+        id
+        text
+        createdAt
+        author {
+          username
+        }
+      }
+    }
+  }
+`;
