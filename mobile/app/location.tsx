@@ -1,22 +1,20 @@
 import React, { useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  TextInput, 
-  FlatList, 
-  TouchableOpacity,  
-  StatusBar 
+  View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, StatusBar 
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons'; 
 
-
 const COUNTRIES = [
-  'Gabon', 'Gambia', 'Germany', 'Ghana', 'Greece', 
-  'Grenada', 'Guatemala', 'Guyana', 'Haiti', 'Honduras'
+  'Ghana', 'Nigeria', 'Kenya', 'South Africa', 'Egypt', 'Morocco',
+  'United States', 'United Kingdom', 'Canada', 'Germany', 'France',
+  'Australia', 'India', 'China', 'Japan', 'Brazil',
+  'Mexico', 'Argentina', 'Spain', 'Italy', 'Russia',
+  'South Korea', 'Indonesia', 'Turkey', 'Saudi Arabia', 'UAE',
+  'Gabon', 'Gambia', 'Greece', 'Grenada', 'Guatemala', 'Guyana',
+  'Haiti', 'Honduras'
 ];
 
 export default function LocationScreen() {

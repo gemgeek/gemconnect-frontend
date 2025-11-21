@@ -1,20 +1,13 @@
 import React, { useState } from 'react';
 import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  TextInput, 
-  TouchableOpacity, 
-  Image, 
-  KeyboardAvoidingView, 
-  Platform, 
-  ScrollView,
-  Alert, 
-  ActivityIndicator 
+  View, Text, StyleSheet, TextInput, TouchableOpacity, 
+  Image, KeyboardAvoidingView, Platform, ScrollView,
+  Alert, ActivityIndicator 
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { FontAwesome } from '@expo/vector-icons'; 
+import { FontAwesome, Ionicons } from '@expo/vector-icons'; 
+
 import { useMutation } from '@apollo/client/react';
 import { REGISTER_USER } from '../src/graphql/mutations';
 
@@ -24,18 +17,15 @@ export default function SignupScreen() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false); 
 
   const [registerUser, { loading }] = useMutation(REGISTER_USER, {
     onCompleted: (data: any) => {
-      // Success!
       Alert.alert("Success", "Account created successfully!");
-      console.log("User created:", data);
       router.push('/login'); 
     },
     onError: (error: any) => {
-      // Failed!
       Alert.alert("Registration Failed", error.message);
-      console.error("GraphQL Error:", error);
     }
   });
 
@@ -109,14 +99,26 @@ export default function SignupScreen() {
 
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Password</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your password"
-            placeholderTextColor="#999"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={styles.passwordInput}
+              placeholder="Enter your password"
+              placeholderTextColor="#999"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!isPasswordVisible}
+            />
+            <TouchableOpacity 
+              onPress={() => setIsPasswordVisible(!isPasswordVisible)}
+              style={styles.eyeIcon}
+            >
+              <Ionicons 
+                name={isPasswordVisible ? "eye-off" : "eye"} 
+                size={20} 
+                color="#999" 
+              />
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View style={styles.linkContainer}>
@@ -178,25 +180,28 @@ const styles = StyleSheet.create({
   label: { fontSize: 16, marginBottom: 8, color: '#333' },
   row: { flexDirection: 'row' },
   input: {
-    borderWidth: 1,
-    borderColor: '#DDD',
-    borderRadius: 12,
-    padding: 15,
-    fontSize: 16,
-    backgroundColor: '#FFF',
+    borderWidth: 1, borderColor: '#DDD', borderRadius: 12,
+    padding: 15, fontSize: 16, backgroundColor: '#FFF',
   },
   halfInput: { flex: 1 }, 
+  
+  passwordContainer: {
+    flexDirection: 'row', alignItems: 'center', borderWidth: 1, 
+    borderColor: '#DDD', borderRadius: 12, backgroundColor: '#FFF',
+  },
+  passwordInput: {
+    flex: 1, padding: 15, fontSize: 16,
+  },
+  eyeIcon: {
+    padding: 15,
+  },
   linkContainer: { flexDirection: 'row', justifyContent: 'center', marginBottom: 30 },
   linkText: { color: '#888' },
   linkHighlight: { color: '#FF007F', fontWeight: 'bold' },
   buttonWrapper: {
-    height: 55,
-    marginBottom: 30,
-    shadowColor: "#FF007F",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 5,
+    height: 55, marginBottom: 30,
+    shadowColor: "#FF007F", shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3, shadowRadius: 5, elevation: 5,
   },
   button: { flex: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 28 },
   buttonText: { color: '#FFF', fontSize: 18, fontWeight: 'bold' },

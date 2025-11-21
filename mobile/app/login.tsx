@@ -1,44 +1,31 @@
 import React, { useState } from 'react';
 import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  TextInput, 
-  TouchableOpacity, 
-  Image, 
-  KeyboardAvoidingView, 
-  Platform, 
-  ScrollView,
-  Alert,
-  ActivityIndicator
+  View, Text, StyleSheet, TextInput, TouchableOpacity, 
+  Image, KeyboardAvoidingView, Platform, ScrollView,
+  Alert, ActivityIndicator
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { FontAwesome } from '@expo/vector-icons'; 
-import AsyncStorage from '@react-native-async-storage/async-storage'; 
+import { FontAwesome, Ionicons } from '@expo/vector-icons'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useMutation } from '@apollo/client/react';
 import { LOGIN_USER } from '../src/graphql/mutations';
 
 export default function LoginScreen() {
   const router = useRouter();
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false); 
 
-  // LOGIN MUTATION SETUP
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     onCompleted: async (data: any) => {
-      // GET THE TOKEN
       const token = data.tokenAuth.token;
-      
       console.log("Login Success! Token:", token);
 
       try {
-        // SAVE THE TOKEN
         await AsyncStorage.setItem('token', token);
-        
-        await AsyncStorage.setItem('username', email); 
-
+        await AsyncStorage.setItem('username', username); 
         Alert.alert("Success", "Login Successful!");
         router.replace('/(tabs)'); 
       } catch (e) {
@@ -51,15 +38,14 @@ export default function LoginScreen() {
   });
 
   const handleLogin = () => {
-    if (!email || !password) {
-      Alert.alert("Error", "Please enter email and password");
+    if (!username || !password) {
+      Alert.alert("Error", "Please enter username and password");
       return;
     }
-
     
     loginUser({
       variables: {
-        username: email, // Sending email as the username field
+        username: username,
         password: password
       }
     });
@@ -83,27 +69,39 @@ export default function LoginScreen() {
         <Text style={styles.header}>Log In</Text>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Email or Username</Text>
+          <Text style={styles.label}>Username</Text>
           <TextInput
             style={styles.input}
-            placeholder="Enter your email or username"
+            placeholder="Enter your username"
             placeholderTextColor="#999"
-            value={email}
-            onChangeText={setEmail}
+            value={username}
+            onChangeText={setUsername}
             autoCapitalize="none"
           />
         </View>
 
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Password</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your password"
-            placeholderTextColor="#999"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={styles.passwordInput}
+              placeholder="Enter your password"
+              placeholderTextColor="#999"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!isPasswordVisible} 
+            />
+            <TouchableOpacity 
+              onPress={() => setIsPasswordVisible(!isPasswordVisible)}
+              style={styles.eyeIcon}
+            >
+              <Ionicons 
+                name={isPasswordVisible ? "eye-off" : "eye"} 
+                size={20} 
+                color="#999" 
+              />
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View style={styles.linkContainer}>
@@ -164,24 +162,27 @@ const styles = StyleSheet.create({
   inputGroup: { marginBottom: 20 },
   label: { fontSize: 16, marginBottom: 8, color: '#333' },
   input: {
-    borderWidth: 1,
-    borderColor: '#DDD',
-    borderRadius: 12,
+    borderWidth: 1, borderColor: '#DDD', borderRadius: 12,
+    padding: 15, fontSize: 16, backgroundColor: '#FFF',
+  },
+  
+  passwordContainer: {
+    flexDirection: 'row', alignItems: 'center', borderWidth: 1, 
+    borderColor: '#DDD', borderRadius: 12, backgroundColor: '#FFF',
+  },
+  passwordInput: {
+    flex: 1, padding: 15, fontSize: 16,
+  },
+  eyeIcon: {
     padding: 15,
-    fontSize: 16,
-    backgroundColor: '#FFF',
   },
   linkContainer: { flexDirection: 'row', justifyContent: 'center', marginBottom: 30 },
   linkText: { color: '#888' },
   linkHighlight: { color: '#FF007F', fontWeight: 'bold' },
   buttonWrapper: {
-    height: 55,
-    marginBottom: 30,
-    shadowColor: "#FF007F",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 5,
+    height: 55, marginBottom: 30,
+    shadowColor: "#FF007F", shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3, shadowRadius: 5, elevation: 5,
   },
   button: { flex: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 28 },
   buttonText: { color: '#FFF', fontSize: 18, fontWeight: 'bold' },
