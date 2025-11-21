@@ -1,42 +1,78 @@
 # GemConnect Frontend - Project Nexus 📱✨
 
-## About GemConnect
-GemConnect is a modern culture-centric social media application designed to help users express themselves, share posts, explore content, and connect with others in a smooth and engaging mobile experience.  
-This repository contains the frontend (mobile app) built using React Native and TypeScript, with GraphQL for dynamic data fetching from the backend.
+[![Published on Expo](https://img.shields.io/badge/Published_on-Expo-4630EB?style=for-the-badge&logo=expo&logoColor=white)](https://expo.dev/accounts/gem_geek/projects/mobile)
+[![React Native](https://img.shields.io/badge/React_Native-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactnative.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Apollo Client](https://img.shields.io/badge/Apollo_Client-311C87?style=for-the-badge&logo=apollo-graphql&logoColor=white)](https://www.apollographql.com/)
 
-The app includes 19 beautifully designed screens such as onboarding, authentication, home feed, explore, notifications, messaging, add-post, profile, edit profile, image update, and settings.
+## 📖 About GemConnect
+**GemConnect** is a modern, visual-first social media application designed for creators to share portfolio work and connect in a distraction-free environment.
+
+This repository contains the **Mobile Frontend**, built with **React Native (Expo)** and **TypeScript**. It communicates with a Django backend via **GraphQL**, featuring a robust authentication system, dynamic feed, and real-time user interactions.
+
+## 🚀 Live Demo
+**Scan to Run on your Phone (Expo Go):**
+
+🔗 **Project Link:** [https://expo.dev/accounts/gem_geek/projects/mobile](https://expo.dev/accounts/gem_geek/projects/mobile)
 
 ---
 
-## Features
-- **Onboarding & Authentication**
-  - Welcome screens, login, signup, location selection
+## 🛠 Tech Stack
 
-- **Dynamic Home Feed**
-  - GraphQL-powered posts
-  - Likes, comments, and share functionality
-  - Smooth UI updates and transitions
+| Category | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Core** | **React Native (Expo)** | Cross-platform mobile development (iOS & Android). |
+| **Language** | **TypeScript** | Type safety and robust code structure. |
+| **Data Layer** | **Apollo Client** | GraphQL queries, mutations, and caching. |
+| **Navigation** | **Expo Router** | File-based routing (Tabs + Stacks). |
+| **Storage** | **AsyncStorage** | Persisting JWT tokens and user preferences. |
+| **Media** | **Expo Image Picker** | Accessing device gallery for uploads. |
 
-- **Comments & Share Modals**
-  - Layered interfaces for user interactions
+---
 
-- **Explore Page**
-  - Discovery grid for culture and content exploration
+## ⚡ Key Features (Implemented)
 
-- **Posting System**
-  - Create new posts with text and images
+### 🔐 Authentication & Security
+* **JWT Flow:** Secure Login and Registration connected to Django.
+* **Persistence:** Auto-login functionality using stored tokens.
+* **Secure Inputs:** Password visibility toggles and validation.
 
-- **Messaging**
-  - Main chats list
-  - One-on-one conversation screens
+### 🏠 Dynamic Home Feed
+* **Real-Time Data:** Fetches posts directly from the PostgreSQL database via GraphQL.
+* **Interactions:**
+    * **Like System:** Optimistic UI updates (heart turns red instantly).
+    * **Comments:** Functional slide-up modal to view and add comments.
+    * **Share:** Custom share sheet UI.
 
-- **User Profile**
-  - User posts grid
-  - Edit profile & change profile photo
-  - Share profile
+### 📸 Content Creation
+* **Media Uploads:** Integrated native Image Picker to upload photos from the gallery.
+* **Base64 Handling:** Converts images for secure transmission to the backend.
 
-- **Settings**
-  - Account options, security, and privacy
+### 👤 Profile Management
+* **Dynamic Profile:** Displays user stats (Followers/Following) and post grid.
+* **Edit Profile:** Fully functional edit screen with local storage persistence for bio and name changes.
+* **Public Profiles:** Ability to view other users' profiles and Follow/Unfollow them.
+
+---
+
+## 📂 Project Structure
+The project follows the **Expo Router** directory structure:
+
+```bash
+gemconnect-frontend/mobile/
+├── app/                  # Screens & Navigation (Routes)
+│   ├── (tabs)/           # Bottom Tab Bar (Feed, Explore, Add, Messages, Profile)
+│   ├── user/             # Dynamic Public Profile routes
+│   ├── _layout.tsx       # Root Layout & Providers
+│   ├── login.tsx         # Auth Screens
+│   └── ...
+├── src/
+│   ├── components/       # Reusable UI (PostItem, CommentsModal, etc.)
+│   ├── graphql/          # Apollo Queries & Mutations
+│   └── types/            # TypeScript Interfaces
+├── assets/               # Images & Fonts
+└── app.json              # Expo Configuration
+```
 
 ---
 
@@ -47,109 +83,40 @@ The app includes 19 beautifully designed screens such as onboarding, authenticat
 
 ---
 
-## Tech Stack
-- **Framework:** React Native (Expo)
-- **Language:** TypeScript
-- **API:** GraphQL (Apollo Client)
-- **Navigation:** React Navigation (Bottom Tabs + Stack)
-- **State Management:** Apollo Cache, React Hooks
-- **Styling:** Tailwind (NativeWind) or Styled Components
-- **Build Tool:** Expo CLI
+## 💻 Installation Guide
 
----
-
-## Badges
-<p align="left">
-  <img src="https://img.shields.io/badge/React_Native-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React Native" />
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white" alt="Expo" />
-  <img src="https://img.shields.io/badge/GraphQL-E10098?style=for-the-badge&logo=graphql&logoColor=white" alt="GraphQL" />
-  <img src="https://img.shields.io/badge/Apollo_Client-311C87?style=for-the-badge&logo=apollo-graphql&logoColor=white" alt="Apollo Client" />
-  <img src="https://img.shields.io/badge/React_Navigation-000000?style=for-the-badge&logo=react&logoColor=white" alt="React Navigation" />
-</p>
-
----
-
-## Project Structure
-```
-gemconnect-frontend/
-├── src/
-│   ├── assets/           (images, icons, fonts)
-│   ├── components/       (reusable UI components)
-│   ├── screens/          (19 app screens)
-│   ├── navigation/       (tab + stack navigation)
-│   ├── graphql/          (queries, mutations)
-│   ├── hooks/            (custom logic)
-│   ├── utils/            (helpers)
-│   └── styles/           (global styles)
-├── App.tsx               (app entry)
-├── package.json
-├── README.md
-└── docs/
-    └── images/           (screen previews)
-```
-
----
-
-## Installation
-
-1. **Clone the repository**
-```
+### Clone the repository
+```bash
 git clone https://github.com/<your-username>/gemconnect-frontend.git
-cd gemconnect-frontend
+cd gemconnect-frontend/mobile
 ```
 
-2. **Install dependencies**
-```
+### Install dependencies
+```bash
 npm install
 ```
 
-3. **Start the Expo development server**
-```
+### Start the server
+```bash
 npx expo start
 ```
 
-4. **Environment Variables**
-Create a `.env` file:
-```
-GRAPHQL_API_URL=https://your-backend-url/graphql/
-```
+### Run on Device
+- Scan the QR code with the **Expo Go** app (Android/iOS).  
+- Press **a** for Android Emulator or **i** for iOS Simulator.
 
 ---
 
-## Usage
-- Open the app through Expo Go (Android/iOS).
-- Navigate through onboarding → login → home feed.
-- Interact with posts: like, comment, share.
-- Explore content.
-- Create posts.
-- Chat with users.
-- Edit and manage profile.
-- Access notifications and settings.
+## 🔮 Future Roadmap
+
+- **Real-Time Chat:** Upgrade the Messages UI to use WebSockets for live chat.  
+- **Stories:** Implement 24-hour disappearing status updates.  
+- **Push Notifications:** Notify users when they receive a like or follow.
 
 ---
 
-## Next Steps
-- Integrate real-time updates using GraphQL Subscriptions.
-- Improve animations and micro-interactions.
-- Implement push notifications.
-- Prepare web version after mobile completion.
+## 🤝 Contributing
+This project was built as a **Capstone Project** for the **ProDev Engineering Program**.  
+Developed by **Matilda Esenam Gbeve**.
 
 ---
-
-## Collaboration & Contributions
-This frontend is part of the ProDev engineering project.  
-Pull requests or suggestions are welcome under mentorship guidelines.
-
----
-
-## Roadmap
-- Build and refine UI components
-- Connect all screens to backend API
-- Implement full profile editing logic
-- Add real-time messaging
-- Finalize and polish UX
-- Deploy mobile app build
-
-
-  
