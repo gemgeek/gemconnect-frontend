@@ -8,6 +8,7 @@ export const GET_ALL_POSTS = gql`
       image
       createdAt
       author {
+        id
         username
         avatar
         isVerified
@@ -37,12 +38,32 @@ export const GET_NOTIFICATIONS = gql`
       isRead
       createdAt
       sender {
+        id
         username
         avatar
       }
       post {
         id
         content
+        image
+      }
+    }
+  }
+`;
+
+export const GET_USER_PROFILE = gql`
+  query GetUserProfile($userId: ID!) {
+    user(id: $userId) {
+      id
+      username
+      bio
+      avatar
+      isVerified
+      followersCount
+      followingCount
+      isFollowing
+      postSet {
+        id
         image
       }
     }

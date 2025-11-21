@@ -15,6 +15,7 @@ import ShareModal from '../../src/components/ShareModal';
 
 const { width } = Dimensions.get('window');
 
+// Ngrok URL
 const API_URL = 'https://nonmanipulatory-fearsomely-nathanial.ngrok-free.dev'; 
 
 const STORIES = [
@@ -46,7 +47,7 @@ const STORIES = [
   },
 ];
 
-// COMPONENTS 
+// COMPONENTS
 
 const StoryItem = ({ item }: { item: any }) => (
   <View style={styles.storyItem}>
@@ -74,6 +75,8 @@ const StoryItem = ({ item }: { item: any }) => (
 );
 
 const PostItem = ({ item }: { item: any }) => {
+  const router = useRouter();
+  
   // SETUP LIKE MUTATION
   const [likePost] = useMutation(LIKE_POST);
   const [isLiked, setIsLiked] = useState(false);
@@ -101,7 +104,6 @@ const PostItem = ({ item }: { item: any }) => {
   };
 
   const postImage = getImageUrl(item.image);
-  // Fallback avatar logic
   const avatarImage = item.author.avatar 
     ? { uri: getImageUrl(item.author.avatar) } 
     : require('../../assets/images/story_me.jpg');
@@ -110,7 +112,10 @@ const PostItem = ({ item }: { item: any }) => {
     <View style={styles.postContainer}>
       {/* POST HEADER */}
       <View style={styles.postHeader}>
-        <View style={styles.postUserRow}>
+        <TouchableOpacity 
+          style={styles.postUserRow} 
+          onPress={() => router.push(`/user/${item.author.id}`)}
+        >
           <View style={styles.storyRingSmall}>
              <LinearGradient colors={['#FF007F', '#8B008B']} style={styles.gradientRingSmall}>
                 <View style={styles.whiteBorderSmall}>
@@ -122,7 +127,7 @@ const PostItem = ({ item }: { item: any }) => {
           {item.author.isVerified && (
              <Ionicons name="checkmark-circle" size={14} color="#1DA1F2" style={{ marginLeft: 4 }} />
           )}
-        </View>
+        </TouchableOpacity>
         <Ionicons name="ellipsis-horizontal" size={20} color="#333" />
       </View>
 
@@ -183,9 +188,9 @@ const PostItem = ({ item }: { item: any }) => {
       {/* MODALS */}
       <CommentsModal 
         visible={showComments} 
-        onClose={() => setShowComments(false)}
-        postId={item.id}         
-        comments={item.comments}  
+        onClose={() => setShowComments(false)} 
+        postId={item.id}
+        comments={item.comments}
       />
       <ShareModal 
         visible={showShare} 
@@ -232,10 +237,10 @@ export default function FeedScreen() {
           <TouchableOpacity style={styles.iconButton}>
             <Ionicons name="search" size={24} color="#000" />
           </TouchableOpacity>
-        <TouchableOpacity style={styles.iconButton} onPress={() => router.push('/notifications')}>
-           <Ionicons name="notifications-outline" size={24} color="#000" />
-          <View style={styles.notificationDot} />
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.iconButton} onPress={() => router.push('/notifications')}>
+            <Ionicons name="notifications-outline" size={24} color="#000" />
+            <View style={styles.notificationDot} />
+          </TouchableOpacity>
         </View>
       </View>
 
